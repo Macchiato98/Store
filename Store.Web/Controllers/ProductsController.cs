@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Store.Web.Data;
-using System.Collections.Generic;
-using System.Linq;
+using Store.Web.Helpers;
 using System.Threading.Tasks;
 
 namespace Store.Web.Controllers
@@ -10,10 +9,14 @@ namespace Store.Web.Controllers
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
+        private readonly IUserHelper userHelper;
 
-        public ProductsController(IProductRepository productRepository)
+        public object UserHelper { get; private set; }
+
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper)
         {
             this.productRepository = productRepository;
+            this.userHelper = userHelper;
         }
 
         // GET: Products
@@ -55,6 +58,8 @@ namespace Store.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: Change for the logged user
+                product.User = await this.userHelper.GetUserByEmailAsync("diogo.machado18@gmail.com");
                 await this.productRepository.CreateAsync(product);
                 return RedirectToAction(nameof(Index));
             }
@@ -62,7 +67,7 @@ namespace Store.Web.Controllers
         }
 
         // GET: Products/Edit/5
-        public async  Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -89,7 +94,9 @@ namespace Store.Web.Controllers
             {
                 try
                 {
-                    await this.productRepository.UpdateAsync(product);                   
+                    //TODO: Change for the logged user
+                    product.User = await this.userHelper.GetUserByEmailAsync("diogo.machado18@gmail.com");
+                    await this.productRepository.UpdateAsync(product);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -108,7 +115,7 @@ namespace Store.Web.Controllers
         }
 
         // GET: Products/Delete/5
-        public async  Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
