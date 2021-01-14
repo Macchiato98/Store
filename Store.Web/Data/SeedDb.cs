@@ -45,7 +45,4 @@ namespace Store.Web.Data
         }
     }
 
-    internal class Product : Products
-    {
-    }
 }
