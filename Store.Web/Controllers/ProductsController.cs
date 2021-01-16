@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Store.Web.Data;
 using Store.Web.Data.Entidades;
@@ -10,6 +11,8 @@ using System.Threading.Tasks;
 
 namespace Store.Web.Controllers
 {
+
+    
     public class ProductsController : Controller
     {
         private readonly IProductRepository productRepository;
@@ -47,6 +50,7 @@ namespace Store.Web.Controllers
             return View(product);
         }
 
+        [Authorize]
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -111,7 +115,9 @@ namespace Store.Web.Controllers
 
         }
 
+        
         // GET: Products/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -207,6 +213,7 @@ namespace Store.Web.Controllers
         }
 
         // GET: Products/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
