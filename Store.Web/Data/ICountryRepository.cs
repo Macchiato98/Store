@@ -1,6 +1,4 @@
-﻿
-
-namespace Store.Web.Data
+﻿namespace Store.Web.Data
 {
     using Entidades;
 
